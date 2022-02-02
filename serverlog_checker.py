@@ -2,19 +2,22 @@ import csv
 import os
 print("This file needs to be in the same path as the file to analyze\n")
 file_array=[]
-tenant='xx'
+
 def file_search():
+    global tenant
     tenant = input("\nIntroduce a tenant prefix to check logs, *****for example 't2' for tenant 2*******\n")
     for file in os.listdir():
         if 'ServerLog-'+tenant+'-' in file and file.endswith(".txt"):
             file_array.append(file)
     print('Files found: \n',file_array)
+    
 file_search()
 for x in range(len(file_array)):
     filename = file_array[x]
     print("\n Executing with file: "+ file_array[x]+ "\n")
     print("\n --------------------------------------- \n")
     result_filename = tenant+"records.csv"
+    print("Results in file: ",result_filename)
     print(filename)
     with open(result_filename, 'w',newline='') as csvfile:
         fieldnames = ['Call', 'Duration on server', 'Sql time','Difference'] #Headers of csv
