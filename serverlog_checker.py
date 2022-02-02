@@ -17,7 +17,6 @@ for x in range(len(file_array)):
     print("\n Executing with file: "+ file_array[x]+ "\n")
     print("\n --------------------------------------- \n")
     result_filename = tenant+"records.csv"
-    print("Results in file: ",result_filename)
     print(filename)
     with open(result_filename, 'w',newline='') as csvfile:
         fieldnames = ['Call', 'Duration on server', 'Sql time','Difference'] #Headers of csv
@@ -65,7 +64,9 @@ for x in range(len(file_array)):
             for i in range(len(array_call)):
                 thewriter.writerow({'Call':array_call[i],'Duration on server':array_dur[i],'Sql time':array_sql[i],'Difference':array_diff[i]}) #Every row from csv is a call with its times and differences
 
+
 print("\n ***************PROCESS COMPLETED ************* \n")
+print("Results in file: \n",result_filename)
         
 
             
