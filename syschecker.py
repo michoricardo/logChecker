@@ -1,12 +1,15 @@
 import csv,os
 from collections import Counter
-array_complete,array_error,array_process,array_report,file_array=[],[],[],[],[] #This arrays will contain the data for each line of the csv file and the files contained in the current directory
+array_complete,array_error,array_process,array_report,file_array,file2_array=[],[],[],[],[],[] #This arrays will contain the data for each line of the csv file and the files contained in the current directory
 result_filename = 'resultao.csv'
 def file_securrent_file(): #This method finds every file of systask to iterate and get data
     for file in os.listdir():
         if '-systask' in file and file.endswith(".csv"):
             file_array.append(file)
-    print('Files found: \n',file_array)
+        if '-SysTaskLog' in file and file.endswith(".csv"):
+            file2_array.append(file)        
+    print('Files found for data of tasks: \n',file_array)
+    print('Files found for data of errors: \n',file2_array)
 def most(input_array,attribute,current_file_name): #This method contains the logic of the writing into the csv file
     global thewriter
     fieldnames = ['Task', 'number'] #Headers of csv
@@ -16,7 +19,7 @@ def most(input_array,attribute,current_file_name): #This method contains the log
     count = Counter(input_array)
     sort_orders = sorted(count.items(), key=lambda x: x[1], reverse=True) #Sorted by repetition from most to least repeated
     for key, value in sort_orders:
-        print(key, ':', value)
+        #print(key, ':', value)
         thewriter.writerow({'Task':key,'number':value})
     thewriter.writerow({'Task':'.....','number':'.....'}) #To give some space in csv file for aesthetics
 def iter4file(): #This method contains the iteration for each file to call every other 
@@ -28,7 +31,7 @@ def iter4file(): #This method contains the iteration for each file to call every
             for row in mycsv:
                 if 'COMPLETE' in row:
                     array_complete.append(row[1])
-                if 'ERROR' in row:
+                if 'ERROR' in row or 'Error' in row:
                     array_error.append(row[1])
                 if 'Process' in row:
                     array_process.append(row[1])
@@ -67,11 +70,12 @@ def iter4file(): #This method contains the iteration for each file to call every
 def clear(thing): #Method to clear lists
     thing.clear()
     
+    
 # Main routine
 file_securrent_file()
 with open(result_filename, 'w',newline='') as csvfile:
     iter4file()
-    print('\n TOTALS: \n')
+    print('\nTOTALS: \n')
     print('Total completed in all tenants:  ',total_complete)
     print('Total errors in all tenants:  ',total_error)
     print('Total processes in all tenants:  ',total_process)
